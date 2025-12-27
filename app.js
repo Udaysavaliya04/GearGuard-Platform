@@ -78,6 +78,9 @@ class GearGuard {
         this.renderTeams();
         this.renderCalendar();
         this.renderReports();
+        
+        // Ensure page starts at top
+        window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     createDefaultData() {
@@ -134,6 +137,9 @@ class GearGuard {
     }
 
     switchView(view) {
+        // Scroll to top immediately
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         
