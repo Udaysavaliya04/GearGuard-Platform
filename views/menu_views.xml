@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Main Menu -->
+    <menuitem id="menu_maintenance_root"
+              name="GearGuard"
+              sequence="10"
+              web_icon="base,static/description/icon.png"/>
+
+    <!-- Operations Menu -->
+    <menuitem id="menu_maintenance_operations"
+              name="Operations"
+              parent="menu_maintenance_root"
+              sequence="10"/>
+
+    <!-- Maintenance Requests -->
+    <menuitem id="menu_maintenance_request"
+              name="Maintenance Requests"
+              parent="menu_maintenance_operations"
+              action="action_maintenance_request"
+              sequence="1"/>
+
+    <!-- Equipment -->
+    <menuitem id="menu_equipment"
+              name="Equipment"
+              parent="menu_maintenance_operations"
+              action="action_equipment"
+              sequence="2"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_maintenance_configuration"
+              name="Configuration"
+              parent="menu_maintenance_root"
+              sequence="90"
+              groups="base.group_system"/>
+
+    <!-- Maintenance Teams -->
+    <menuitem id="menu_maintenance_team"
+              name="Maintenance Teams"
+              parent="menu_maintenance_configuration"
+              action="action_maintenance_team"
+              sequence="1"/>
+
+    <!-- Equipment Categories -->
+    <menuitem id="menu_equipment_category"
+              name="Equipment Categories"
+              parent="menu_maintenance_configuration"
+              action="action_equipment_category"
+              sequence="2"/>
+
+    <!-- Maintenance Stages -->
+    <menuitem id="menu_maintenance_stage"
+              name="Maintenance Stages"
+              parent="menu_maintenance_configuration"
+              action="action_maintenance_stage"
+              sequence="3"/>
+
+    <!-- Reporting Menu -->
+    <menuitem id="menu_maintenance_reporting"
+              name="Reporting"
+              parent="menu_maintenance_root"
+              sequence="50"/>
+
+    <!-- Maintenance Analysis -->
+    <menuitem id="menu_maintenance_analysis"
+              name="Maintenance Analysis"
+              parent="menu_maintenance_reporting"
+              action="action_maintenance_request"
+              sequence="1"/>
+
+</odoo>
