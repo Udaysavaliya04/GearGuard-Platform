@@ -66,8 +66,8 @@ GearGuard is a maintenance management system to track equipment, maintenance req
   - **Delete Confirmations** - Smart warnings before deleting items with dependencies
   - Local storage persistence (data saved automatically)
   - Responsive design (works on mobile/tablet/desktop)
- 
-  - Summary:
+
+- **Summary**
   - Equipment CRUD with department, assignment, maintenance team, and lifecycle fields.
   - Maintenance requests with role-based filtering and assignment action via DRF ViewSet.
   - Maintenance teams with members (technicians) management.
