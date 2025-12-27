@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GearGuard - Complete maintenance management system for tracking equipment, requests, and teams">
+    <meta name="keywords" content="maintenance tracker, equipment management, maintenance requests, preventive maintenance">
+    <meta name="author" content="GearGuard">
+    <meta name="theme-color" content="#8b5cf6">
     <title>GearGuard - Ultimate Maintenance Tracker</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -31,6 +35,19 @@
                 <button class="nav-btn" data-view="reports">
                     <i class="fas fa-chart-bar"></i> Reports
                 </button>
+                <div style="border-left: 1px solid var(--glass-border); height: 30px; margin: 0 0.5rem;"></div>
+                <button class="btn" onclick="app.addSampleData()" title="Load demo data">
+                    <i class="fas fa-database"></i> Demo
+                </button>
+                <button class="btn" onclick="app.exportData()" title="Export data as JSON">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="btn" onclick="app.importData()" title="Import data from JSON">
+                    <i class="fas fa-upload"></i>
+                </button>
+                <button class="btn" onclick="app.resetData()" title="Clear all data" style="color: var(--danger);">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
             </nav>
         </header>
 
@@ -40,9 +57,12 @@
             <div id="requests-view" class="view active">
                 <div class="view-header">
                     <h2>Maintenance Requests</h2>
-                    <button class="btn btn-primary" onclick="app.openRequestModal()">
-                        <i class="fas fa-plus"></i> New Request
-                    </button>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <div id="quick-stats" style="display: flex; gap: 1rem; margin-right: 1rem; font-size: 0.9rem;"></div>
+                        <button class="btn btn-primary" onclick="app.openRequestModal()">
+                            <i class="fas fa-plus"></i> New Request
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="kanban-board" id="kanban-board">
