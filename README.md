@@ -2,7 +2,7 @@
 
 GearGuard is a maintenance management system to track equipment, maintenance requests, and teams. The goal is to link equipment (what), teams (who), and requests (work).
 
-## 🚀 Features
+## Features
 
 - **Equipment Management**
 
@@ -73,7 +73,7 @@ GearGuard is a maintenance management system to track equipment, maintenance req
   - Maintenance teams with members (technicians) management.
   - User signup/login using the custom user model (roles: admin, manager, technician).
 
-## 📁 File Structure
+## File Structure
 
 ```
 gearguard-web/
@@ -83,21 +83,21 @@ gearguard-web/
 └── README.md        # This file
 ```
 
-## 🎨 Technologies Used
+## Technologies Used
 
 - **HTML5** 
 - **CSS3** 
 - **Vanilla JavaScript**
 - **Chart.js**
 
-## 💾 Data Storage
+## Data Storage
 
 - Automatic saving on every change
 - Persists across browser sessions
 - No database required
 - Clear data: Developer Tools → Application → Local Storage → Clear
 
-## 🔥 Key Features Demonstrated
+## Key Features Demonstrated
 
 ### 1. Auto-Fill Logic (Flow 1: The Breakdown)
 
