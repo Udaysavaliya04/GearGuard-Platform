@@ -126,6 +126,7 @@ class MaintenanceRequest(models.Model):
     is_overdue = fields.Boolean(
         string='Is Overdue',
         compute='_compute_is_overdue',
+        store=True,
         help='Whether the scheduled date has passed'
     )
     
