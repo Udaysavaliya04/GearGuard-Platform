@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
-    <record id="view_equipment_tree" model="ir.ui.view">
+    <record id="view_equipment_list" model="ir.ui.view">
         <field name="name">maintenance.equipment.list</field>
         <field name="model">maintenance.equipment</field>
         <field name="arch" type="xml">
@@ -162,7 +162,6 @@
                 <filter string="Active" name="active" domain="[('active', '=', True)]"/>
                 <filter string="Scrapped" name="scrapped" domain="[('is_scrapped', '=', True)]"/>
                 <separator/>
-                <filter string="With Open Maintenance" name="open_maintenance" domain="[('maintenance_open_count', '>', 0)]"/>
                 <separator/>
                 <group expand="0" string="Group By">
                     <filter string="Category" name="group_category" context="{'group_by': 'category_id'}"/>

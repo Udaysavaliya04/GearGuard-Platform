@@ -182,10 +182,9 @@
             <calendar string="Maintenance Calendar" 
                       date_start="scheduled_date" 
                       color="maintenance_team_id"
-                      quick_add="True"
+                      quick_create="true"
                       mode="month"
-                      event_open_popup="true"
-                      event_limit="5">
+                      event_open_popup="true">
                 <field name="name"/>
                 <field name="equipment_id"/>
                 <field name="maintenance_team_id" filters="1" color="color"/>
