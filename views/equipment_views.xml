@@ -6,7 +6,7 @@
         <field name="name">maintenance.equipment.tree</field>
         <field name="model">maintenance.equipment</field>
         <field name="arch" type="xml">
-            <tree string="Equipment" decoration-muted="is_scrapped == True">
+            <list string="Equipment" decoration-muted="is_scrapped == True">
                 <field name="name"/>
                 <field name="serial_number"/>
                 <field name="category_id"/>
@@ -16,7 +16,7 @@
                 <field name="location"/>
                 <field name="maintenance_open_count"/>
                 <field name="is_scrapped" invisible="1"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -184,10 +184,10 @@
         <field name="name">maintenance.equipment.category.tree</field>
         <field name="model">maintenance.equipment.category</field>
         <field name="arch" type="xml">
-            <tree string="Equipment Categories">
+            <list string="Equipment Categories">
                 <field name="name"/>
                 <field name="equipment_count"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -213,7 +213,7 @@
     <record id="action_equipment" model="ir.actions.act_window">
         <field name="name">Equipment</field>
         <field name="res_model">maintenance.equipment</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="search_view_id" ref="view_equipment_search"/>
         <field name="context">{'search_default_active': 1}</field>
         <field name="help" type="html">
@@ -231,7 +231,7 @@
     <record id="action_equipment_category" model="ir.actions.act_window">
         <field name="name">Equipment Categories</field>
         <field name="res_model">maintenance.equipment.category</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create an Equipment Category

@@ -170,7 +170,7 @@ class MaintenanceEquipment(models.Model):
             'name': 'Maintenance Requests',
             'type': 'ir.actions.act_window',
             'res_model': 'maintenance.request',
-            'view_mode': 'kanban,tree,form,calendar',
+            'view_mode': 'kanban,list,form,calendar',
             'domain': [('equipment_id', '=', self.id)],
             'context': {
                 'default_equipment_id': self.id,

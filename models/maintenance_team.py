@@ -74,7 +74,7 @@ class MaintenanceTeam(models.Model):
             'name': 'Equipment',
             'type': 'ir.actions.act_window',
             'res_model': 'maintenance.equipment',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('maintenance_team_id', '=', self.id)],
             'context': {'default_maintenance_team_id': self.id}
         }
@@ -86,7 +86,7 @@ class MaintenanceTeam(models.Model):
             'name': 'Maintenance Requests',
             'type': 'ir.actions.act_window',
             'res_model': 'maintenance.request',
-            'view_mode': 'kanban,tree,form,calendar',
+            'view_mode': 'kanban,list,form,calendar',
             'domain': [('maintenance_team_id', '=', self.id)],
             'context': {'default_maintenance_team_id': self.id}
         }
