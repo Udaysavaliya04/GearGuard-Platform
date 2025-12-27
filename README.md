@@ -73,37 +73,6 @@ GearGuard is a maintenance management system to track equipment, maintenance req
   - Maintenance teams with members (technicians) management.
   - User signup/login using the custom user model (roles: admin, manager, technician).
 
-## 🎯 Quick Start Demo
-
-1. **Open the application** (double-click index.html)
-
-2. **Load Sample Data**:
-
-   - Click the "Demo" button in the header
-   - Or accept the welcome prompt on first visit
-   - Instantly see 4 realistic maintenance requests
-
-3. **Explore Features**:
-
-   - **Kanban Board**: Drag & drop cards between stages (watch for toast notifications!)
-   - **Quick Stats**: View total, overdue, and active requests at the top
-   - **Equipment Page**:
-     - Use "Group By" dropdown to organize by Category, Team, or Location
-     - Search equipment with real-time filtering
-     - Click maintenance count badges to view open requests
-   - **Calendar**: Click dates to schedule preventive maintenance
-   - **Reports**: Real-time charts and analytics
-
-4. **Keyboard Shortcuts**:
-
-   - Press `ESC` to close any modal
-   - Use `Tab` to navigate forms
-
-5. **Data Management**:
-   - **Export**: Download button (📥) - backup your data as JSON
-   - **Import**: Upload button (📤) - restore from backup
-   - **Reset**: Trash button (🗑️) - clear all data
-
 ## 📁 File Structure
 
 ```
@@ -116,12 +85,10 @@ gearguard-web/
 
 ## 🎨 Technologies Used
 
-- **HTML5** - Structure
-- **CSS3** - Styling (Flexbox, Grid, animations)
-- **Vanilla JavaScript** - All functionality
-- **Chart.js** - Reports and analytics
-- **Font Awesome** - Icons
-- **Local Storage API** - Data persistence
+- **HTML5** 
+- **CSS3** 
+- **Vanilla JavaScript**
+- **Chart.js**
 
 ## 💾 Data Storage
 
