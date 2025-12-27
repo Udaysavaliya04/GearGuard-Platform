@@ -18,44 +18,14 @@
         <field name="name">maintenance.team.form</field>
         <field name="model">maintenance.team</field>
         <field name="arch" type="xml">
-            <form string="Maintenance Team">
+            <form>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_equipment" 
-                                type="object" 
-                                class="oe_stat_button" 
-                                icon="fa-wrench">
-                            <field name="equipment_count" widget="statinfo" string="Equipment"/>
-                        </button>
-                        <button name="action_view_requests" 
-                                type="object" 
-                                class="oe_stat_button" 
-                                icon="fa-ticket">
-                            <field name="request_count" widget="statinfo" string="Requests"/>
-                        </button>
-                    </div>
-                    <field name="active" invisible="1"/>
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                     <group>
-                        <group>
-                            <field name="name" placeholder="e.g., Mechanics, Electricians, IT Support"/>
-                        </group>
-                        <group>
-                            <field name="color" widget="color_picker"/>
-                        </group>
-                    </group>
-                    <group string="Team Members">
-                        <field name="member_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create': True}"/>
-                    </group>
-                    <group string="Notes">
-                        <field name="notes" placeholder="Additional information about this team..."/>
+                        <field name="name"/>
+                        <field name="member_ids"/>
+                        <field name="notes"/>
                     </group>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
             </form>
         </field>
     </record>
