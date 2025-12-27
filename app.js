@@ -15,6 +15,7 @@ class GearGuard {
         this.currentView = 'requests';
         this.currentMonth = new Date();
         this.draggedCard = null;
+        this.equipmentGroupBy = 'none'; // Group by: none, category, team, location
         
         this.loadData();
         this.init();
@@ -45,6 +46,15 @@ class GearGuard {
             });
         }
 
+        // Equipment group by functionality
+        const groupBySelect = document.getElementById('equipment-group-by');
+        if (groupBySelect) {
+            groupBySelect.addEventListener('change', (e) => {
+                this.equipmentGroupBy = e.target.value;
+                this.renderEquipment();
+            });
+        }
+
         // Initialize default data if empty
         if (this.data.teams.length === 0) {
             this.createDefaultData();
@@ -54,14 +64,15 @@ class GearGuard {
         const hasSeenWelcome = localStorage.getItem('gearguard_welcome');
         if (!hasSeenWelcome && this.data.requests.length === 0) {
             localStorage.setItem('gearguard_welcome', 'true');
-            setTimeout(() => {
-                if (confirm('👋 Welcome to GearGuard!\n\nWould you like to load sample data to explore the features?')) {
-                    this.addSampleData();
-                }
-            }, 500);
+            this.showHome();
+        } else {
+            // If returning user, show home page
+            this.showHome();
         }
 
         // Render initial view
+        this.updateHomeStats();
+        this.setupScrollAnimations();
         this.renderRequests();
         this.renderEquipment();
         this.renderTeams();
@@ -119,20 +130,33 @@ class GearGuard {
             equipment: this.data.equipment,
             requests: this.data.requests
         }));
+        this.updateHomeStats();
     }
 
     switchView(view) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         
-        document.getElementById(`${view}-view`).classList.add('active');
-        document.querySelector(`[data-view="${view}"]`).classList.add('active');
+        const viewElement = document.getElementById(`${view}-view`);
+        const navButton = document.querySelector(`[data-view="${view}"]`);
+        
+        if (viewElement) viewElement.classList.add('active');
+        if (navButton) navButton.classList.add('active');
         
         this.currentView = view;
+        
+        // Toggle between home page and app navigation
+        const isHomePage = view === 'home';
+        const appNav = document.getElementById('app-nav');
+        const launchBtn = document.getElementById('launch-app-btn');
+        
+        if (appNav) appNav.style.display = isHomePage ? 'none' : 'flex';
+        if (launchBtn) launchBtn.style.display = isHomePage ? 'inline-flex' : 'none';
         
         // Re-render if needed
         if (view === 'calendar') this.renderCalendar();
         if (view === 'reports') this.renderReports();
+        if (view === 'home') this.updateHomeStats();
     }
 
     // REQUEST FUNCTIONS
@@ -200,7 +224,7 @@ class GearGuard {
                 <div class="card-meta">
                     <div class="card-meta-item">
                         <i class="fas fa-wrench"></i>
-                        <span>${equipment ? equipment.name : 'Unknown'}</span>
+                        <span>${equipment ? equipment.name : 'Unknown'}${equipment && equipment.category ? ` (${equipment.category})` : ''}</span>
                     </div>
                     <div class="card-meta-item">
                         <i class="fas fa-users"></i>
@@ -269,6 +293,7 @@ class GearGuard {
     moveRequest(requestId, newStage) {
         const request = this.data.requests.find(r => r.id == requestId);
         if (request) {
+            const oldStage = request.stage;
             request.stage = newStage;
             
             // Scrap logic
@@ -277,12 +302,23 @@ class GearGuard {
                 if (equipment) {
                     equipment.scrapped = true;
                     equipment.scrapDate = new Date().toISOString().split('T')[0];
-                    alert(`Equipment "${equipment.name}" has been marked as scrapped.`);
+                    this.showToast(`⚠️ Equipment "${equipment.name}" has been marked as SCRAPPED`, 'warning');
+                }
+            } else {
+                // Show notification for stage changes
+                const stageNames = {
+                    'new': 'New',
+                    'in_progress': 'In Progress',
+                    'repaired': 'Repaired'
+                };
+                if (oldStage !== newStage) {
+                    this.showToast(`Request moved to ${stageNames[newStage] || newStage}`, 'success');
                 }
             }
             
             this.saveData();
             this.renderRequests();
+            this.renderEquipment(); // Update equipment list to show scrapped status
         }
     }
 
@@ -391,49 +427,92 @@ class GearGuard {
     // EQUIPMENT FUNCTIONS
     renderEquipment() {
         const list = document.getElementById('equipment-list');
-        const equipment = this.data.equipment;
+        let equipment = [...this.data.equipment];
         
-        list.innerHTML = `
-            <div class="table-row header">
-                <div>Equipment</div>
-                <div>Category</div>
-                <div>Serial Number</div>
-                <div>Team</div>
-                <div>Location</div>
-                <div>Maintenance</div>
-                <div>Actions</div>
-            </div>
-            ${equipment.map(e => {
-                const requests = this.data.requests.filter(r => r.equipment == e.id);
-                const openRequests = requests.filter(r => r.stage !== 'repaired' && r.stage !== 'scrap');
-                
-                return `
-                    <div class="table-row">
-                        <div>
-                            <div class="equipment-name">${e.name}</div>
-                            ${e.scrapped ? '<span class="badge badge-overdue">SCRAPPED</span>' : ''}
-                        </div>
-                        <div><span class="equipment-badge">${e.category}</span></div>
-                        <div class="equipment-serial">${e.serialNumber || '-'}</div>
-                        <div>${e.team}</div>
-                        <div>${e.location || '-'}</div>
-                        <div>
-                            ${openRequests.length > 0 ? `<span class="maintenance-count"><i class="fas fa-ticket-alt"></i> ${openRequests.length}</span>` : '-'}
-                        </div>
-                        <div class="table-actions">
-                            <button class="action-btn" onclick="app.viewEquipmentRequests(${e.id})" title="View requests">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="action-btn" onclick="app.editEquipment(${e.id})" title="Edit equipment">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="action-btn" onclick="app.deleteEquipment(${e.id})" title="Delete equipment" style="color: var(--danger);">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
+        // Group equipment if needed
+        let groupedHTML = '';
+        
+        if (this.equipmentGroupBy === 'none') {
+            // Render as flat list
+            groupedHTML = `
+                <div class="table-row header">
+                    <div>Equipment</div>
+                    <div>Category</div>
+                    <div>Serial Number</div>
+                    <div>Team</div>
+                    <div>Location</div>
+                    <div>Maintenance</div>
+                    <div>Actions</div>
+                </div>
+                ${equipment.map(e => this.renderEquipmentRow(e)).join('')}
+            `;
+        } else {
+            // Group by selected field
+            const groups = {};
+            equipment.forEach(e => {
+                const key = this.equipmentGroupBy === 'category' ? e.category : 
+                           this.equipmentGroupBy === 'team' ? e.team : 
+                           (e.location || 'No Location');
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(e);
+            });
+            
+            groupedHTML = Object.keys(groups).sort().map(groupName => `
+                <div class="equipment-group">
+                    <div class="equipment-group-header">
+                        <i class="fas fa-${
+                            this.equipmentGroupBy === 'category' ? 'box' : 
+                            this.equipmentGroupBy === 'team' ? 'users' : 'map-marker-alt'
+                        }"></i>
+                        <h3>${groupName}</h3>
+                        <span class="group-count">${groups[groupName].length} items</span>
                     </div>
-                `;
-            }).join('')}
+                    <div class="table-row header">
+                        <div>Equipment</div>
+                        <div>Category</div>
+                        <div>Serial Number</div>
+                        <div>Team</div>
+                        <div>Location</div>
+                        <div>Maintenance</div>
+                        <div>Actions</div>
+                    </div>
+                    ${groups[groupName].map(e => this.renderEquipmentRow(e)).join('')}
+                </div>
+            `).join('');
+        }
+        
+        list.innerHTML = groupedHTML;
+    }
+
+    renderEquipmentRow(e) {
+        const requests = this.data.requests.filter(r => r.equipment == e.id);
+        const openRequests = requests.filter(r => r.stage !== 'repaired' && r.stage !== 'scrap');
+        
+        return `
+            <div class="table-row">
+                <div>
+                    <div class="equipment-name">${e.name}</div>
+                    ${e.scrapped ? '<span class="badge badge-overdue">SCRAPPED</span>' : ''}
+                </div>
+                <div><span class="equipment-badge">${e.category}</span></div>
+                <div class="equipment-serial">${e.serialNumber || '-'}</div>
+                <div>${e.team}</div>
+                <div>${e.location || '-'}</div>
+                <div>
+                    ${openRequests.length > 0 ? `<button class="maintenance-count" onclick="app.viewEquipmentRequests(${e.id})" title="Click to view ${openRequests.length} open request${openRequests.length > 1 ? 's' : ''}"><i class="fas fa-ticket-alt"></i> ${openRequests.length}</button>` : '<span style="color: var(--text-tertiary);">-</span>'}
+                </div>
+                <div class="table-actions">
+                    <button class="action-btn" onclick="app.viewEquipmentRequests(${e.id})" title="View all requests">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="action-btn" onclick="app.editEquipment(${e.id})" title="Edit equipment">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="action-btn" onclick="app.deleteEquipment(${e.id})" title="Delete equipment" style="color: var(--danger);">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
         `;
     }
 
@@ -1017,6 +1096,75 @@ class GearGuard {
         }).length;
 
         return { total, open, inProgress, completed, overdue };
+    }
+
+    // HOME PAGE METHODS
+    showHome() {
+        this.switchView('home');
+    }
+
+    getStarted() {
+        this.switchView('requests');
+        this.showToast('🚀 Welcome to GearGuard! Start by creating your first request.', 'success');
+    }
+
+    launchApp() {
+        this.switchView('requests');
+    }
+
+    updateHomeStats() {
+        const equipmentCount = document.getElementById('hero-equipment-count');
+        const requestsCount = document.getElementById('hero-requests-count');
+        const teamsCount = document.getElementById('hero-teams-count');
+        
+        if (equipmentCount) {
+            this.animateCounter(equipmentCount, this.data.equipment.length);
+        }
+        if (requestsCount) {
+            const activeRequests = this.data.requests.filter(r => r.stage !== 'repaired' && r.stage !== 'scrap').length;
+            this.animateCounter(requestsCount, activeRequests);
+        }
+        if (teamsCount) {
+            this.animateCounter(teamsCount, this.data.teams.length);
+        }
+    }
+
+    animateCounter(element, target) {
+        const duration = 1000;
+        const start = parseInt(element.textContent) || 0;
+        const increment = (target - start) / (duration / 16);
+        let current = start;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if ((increment > 0 && current >= target) || (increment < 0 && current <= target)) {
+                element.textContent = target;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current);
+            }
+        }, 16);
+    }
+
+    setupScrollAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        // Observe all fade-in elements
+        setTimeout(() => {
+            document.querySelectorAll('.fade-in, .fade-in-up').forEach(el => {
+                observer.observe(el);
+            });
+        }, 100);
     }
 }
 

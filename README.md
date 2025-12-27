@@ -56,6 +56,10 @@ A complete maintenance management system that runs entirely in your browser with
   - Real-time data
 
 - **Smart Features**
+  - **Equipment Group By** - Organize equipment by Category, Team, or Location for easier tracking
+  - **Toast Notifications** - Visual feedback for stage changes and scrap actions
+  - **Clickable Maintenance Badges** - Click equipment maintenance count to view those requests
+  - **Equipment Category in Cards** - Request cards show equipment name and category
   - Equipment page shows open maintenance count
   - Click to view all requests for specific equipment
   - **Data Export/Import** - Backup and restore your data as JSON
@@ -103,9 +107,12 @@ Then open: `http://localhost:8000`
 
 3. **Explore Features**:
 
-   - **Kanban Board**: Drag & drop cards between stages
+   - **Kanban Board**: Drag & drop cards between stages (watch for toast notifications!)
    - **Quick Stats**: View total, overdue, and active requests at the top
-   - **Equipment Page**: Search equipment, view maintenance counts
+   - **Equipment Page**:
+     - Use "Group By" dropdown to organize by Category, Team, or Location
+     - Search equipment with real-time filtering
+     - Click maintenance count badges to view open requests
    - **Calendar**: Click dates to schedule preventive maintenance
    - **Reports**: Real-time charts and analytics
 
@@ -122,11 +129,13 @@ Then open: `http://localhost:8000`
 ## 💡 Tips for Hackathon Demo
 
 1. **Start Fresh**: Click "Demo" to load sample data
-2. **Show Drag & Drop**: Move "CNC Oil Leak" from "In Progress" to "Repaired"
-3. **Highlight Overdue Badge**: Point out the red overdue indicator
-4. **Demo Auto-Fill**: Create new request, select equipment, watch team auto-fill
-5. **Show Calendar**: Switch to Calendar view to see scheduled maintenance
-6. **Export Data**: Download backup to show data portability
+2. **Show Drag & Drop**: Move "CNC Oil Leak" from "In Progress" to "Repaired" (watch toast notification!)
+3. **Demonstrate Grouping**: Go to Equipment → Select "Group by Category" to show organized view
+4. **Highlight Smart Buttons**: Click the red maintenance count badge to filter requests
+5. **Demo Auto-Fill**: Create new request, select equipment, watch team auto-fill
+6. **Show Calendar**: Switch to Calendar view to see scheduled maintenance
+7. **Scrap Demo**: Drag a request to "Scrap" stage to see equipment marked as scrapped with notification
+8. **Export Data**: Download backup to show data portability
 
 ## 📁 File Structure
 

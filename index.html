@@ -14,47 +14,265 @@
 <body>
     <div id="app">
         <!-- Header -->
-        <header class="header">
-            <div class="logo">
+        <header class="header" id="main-header">
+            <div class="logo" onclick="app.showHome()" style="cursor: pointer;">
                 <i class="fas fa-tools"></i>
                 <h1>GearGuard</h1>
             </div>
-            <nav class="nav">
-                <button class="nav-btn active" data-view="requests">
-                    <i class="fas fa-ticket-alt"></i> Requests
+            <nav class="nav" id="main-nav">
+                <!-- Home page navigation -->
+                <button class="btn btn-launch" onclick="app.launchApp()" id="launch-app-btn">
+                    Launch App <i class="fas fa-arrow-right"></i>
                 </button>
-                <button class="nav-btn" data-view="equipment">
-                    <i class="fas fa-wrench"></i> Equipment
-                </button>
-                <button class="nav-btn" data-view="teams">
-                    <i class="fas fa-users"></i> Teams
-                </button>
-                <button class="nav-btn" data-view="calendar">
-                    <i class="fas fa-calendar-alt"></i> Calendar
-                </button>
-                <button class="nav-btn" data-view="reports">
-                    <i class="fas fa-chart-bar"></i> Reports
-                </button>
-                <div style="border-left: 1px solid var(--glass-border); height: 30px; margin: 0 0.5rem;"></div>
-                <button class="btn" onclick="app.addSampleData()" title="Load demo data">
-                    <i class="fas fa-database"></i> Demo
-                </button>
-                <button class="btn" onclick="app.exportData()" title="Export data as JSON">
-                    <i class="fas fa-download"></i>
-                </button>
-                <button class="btn" onclick="app.importData()" title="Import data from JSON">
-                    <i class="fas fa-upload"></i>
-                </button>
-                <button class="btn" onclick="app.resetData()" title="Clear all data" style="color: var(--danger);">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
+                
+                <!-- App navigation (hidden on home page) -->
+                <div id="app-nav" style="display: none;">
+                    <button class="nav-btn" data-view="home" id="home-btn">
+                        <i class="fas fa-home"></i> Home
+                    </button>
+                    <button class="nav-btn" data-view="requests" id="requests-btn">
+                        <i class="fas fa-ticket-alt"></i> Requests
+                    </button>
+                    <button class="nav-btn" data-view="equipment">
+                        <i class="fas fa-wrench"></i> Equipment
+                    </button>
+                    <button class="nav-btn" data-view="teams">
+                        <i class="fas fa-users"></i> Teams
+                    </button>
+                    <button class="nav-btn" data-view="calendar">
+                        <i class="fas fa-calendar-alt"></i> Calendar
+                    </button>
+                    <button class="nav-btn" data-view="reports">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </button>
+                    <div style="border-left: 1px solid var(--glass-border); height: 30px; margin: 0 0.5rem;" id="nav-separator"></div>
+                    <button class="btn" onclick="app.addSampleData()" title="Load demo data" id="demo-btn">
+                        <i class="fas fa-database"></i> Demo
+                    </button>
+                    <button class="btn" onclick="app.exportData()" title="Export data as JSON" id="export-btn">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="btn" onclick="app.importData()" title="Import data from JSON" id="import-btn">
+                        <i class="fas fa-upload"></i>
+                    </button>
+                    <button class="btn" onclick="app.resetData()" title="Clear all data" style="color: var(--danger);" id="reset-btn">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
             </nav>
         </header>
 
+        <!-- Home Page -->
+        <div id="home-view" class="view active home-page">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-gradient"></div>
+                <div class="hero-content">
+                    <div class="hero-badge fade-in-up" style="animation-delay: 0.1s;">
+                        <i class="fas fa-sparkles"></i>
+                        <span>The Future of Maintenance</span>
+                    </div>
+                    <h1 class="hero-title fade-in-up" style="animation-delay: 0.2s;">
+                        Maintain Everything.
+                        <span class="gradient-text">Track Anything.</span>
+                    </h1>
+                    <p class="hero-subtitle fade-in-up" style="animation-delay: 0.3s;">
+                        The most intuitive maintenance management platform designed for teams who demand excellence.
+                        Beautiful, powerful, and effortless.
+                    </p>
+                    <div class="hero-cta fade-in-up" style="animation-delay: 0.4s;">
+                        <button class="cta-primary" onclick="app.launchApp()">
+                            <span>Get Started</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="cta-secondary" onclick="app.addSampleData(); app.launchApp();">
+                            <i class="fas fa-play"></i>
+                            <span>View Demo</span>
+                        </button>
+                    </div>
+                    <div class="hero-stats fade-in-up" style="animation-delay: 0.5s;">
+                        <div class="stat">
+                            <div class="stat-number" id="hero-equipment-count">0</div>
+                            <div class="stat-label">Equipment Tracked</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="hero-requests-count">0</div>
+                            <div class="stat-label">Active Requests</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="hero-teams-count">0</div>
+                            <div class="stat-label">Teams</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual fade-in-up" style="animation-delay: 0.6s;">
+                    <div class="floating-card card-1">
+                        <i class="fas fa-wrench"></i>
+                        <span>Equipment</span>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="fas fa-users"></i>
+                        <span>Teams</span>
+                    </div>
+                    <div class="floating-card card-3">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <div class="section-header fade-in">
+                    <h2 class="section-title">Everything you need.<br><span class="gradient-text">Nothing you don't.</span></h2>
+                    <p class="section-subtitle">Powerful features that make maintenance management feel effortless</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card fade-in" style="animation-delay: 0.1s;">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #a78bfa, #8b5cf6);">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Smart Auto-Fill</h3>
+                        <p>Select equipment and watch teams auto-populate. Intelligence that saves time.</p>
+                    </div>
+                    <div class="feature-card fade-in" style="animation-delay: 0.2s;">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #34d399, #10b981);">
+                            <i class="fas fa-grip-vertical"></i>
+                        </div>
+                        <h3>Drag & Drop Workflow</h3>
+                        <p>Move requests through stages with intuitive gestures. Natural and fluid.</p>
+                    </div>
+                    <div class="feature-card fade-in" style="animation-delay: 0.3s;">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #60a5fa, #3b82f6);">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Calendar Integration</h3>
+                        <p>Schedule preventive maintenance at a glance. Never miss a checkup.</p>
+                    </div>
+                    <div class="feature-card fade-in" style="animation-delay: 0.4s;">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3>Smart Notifications</h3>
+                        <p>Toast alerts for every action. Beautiful feedback that keeps you informed.</p>
+                    </div>
+                    <div class="feature-card fade-in" style="animation-delay: 0.5s;">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #f87171, #ef4444);">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3>Visual Analytics</h3>
+                        <p>Real-time charts and insights. See the big picture instantly.</p>
+                    </div>
+                    <div class="feature-card fade-in" style="animation-delay: 0.6s;">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #c4b5fd, #a78bfa);">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3>Smart Grouping</h3>
+                        <p>Organize by category, team, or location. Find what you need, fast.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Showcase Section -->
+            <section class="showcase-section">
+                <div class="showcase-card fade-in">
+                    <div class="showcase-content">
+                        <div class="showcase-badge">
+                            <i class="fas fa-award"></i>
+                            <span>No Backend Required</span>
+                        </div>
+                        <h2>Works Anywhere.<br>Instantly.</h2>
+                        <p>Pure frontend magic. No servers, no setup, no complexity. Just open and start tracking. Your data stays local, secure, and under your control.</p>
+                        <ul class="showcase-list">
+                            <li><i class="fas fa-check-circle"></i> Local storage persistence</li>
+                            <li><i class="fas fa-check-circle"></i> Export/Import capabilities</li>
+                            <li><i class="fas fa-check-circle"></i> Works completely offline</li>
+                            <li><i class="fas fa-check-circle"></i> Deploy to any static host</li>
+                        </ul>
+                    </div>
+                    <div class="showcase-visual">
+                        <div class="mockup-browser">
+                            <div class="browser-bar">
+                                <div class="browser-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <div class="browser-url">gearguard.app</div>
+                            </div>
+                            <div class="browser-content">
+                                <div class="mini-kanban">
+                                    <div class="mini-column">
+                                        <div class="mini-card"></div>
+                                        <div class="mini-card"></div>
+                                    </div>
+                                    <div class="mini-column">
+                                        <div class="mini-card"></div>
+                                    </div>
+                                    <div class="mini-column">
+                                        <div class="mini-card"></div>
+                                        <div class="mini-card"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="cta-section">
+                <div class="cta-content fade-in">
+                    <h2>Ready to transform<br>your maintenance workflow?</h2>
+                    <p>Join teams worldwide who trust GearGuard for their maintenance management</p>
+                    <button class="cta-large" onclick="app.launchApp()">
+                        <span>Start Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="home-footer">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <div class="logo">
+                            <i class="fas fa-tools"></i>
+                            <h3>GearGuard</h3>
+                        </div>
+                        <p>The ultimate maintenance tracker.<br>Beautiful. Powerful. Free.</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-column">
+                            <h4>Product</h4>
+                            <a href="#" onclick="app.switchView('requests'); return false;">Requests</a>
+                            <a href="#" onclick="app.switchView('equipment'); return false;">Equipment</a>
+                            <a href="#" onclick="app.switchView('teams'); return false;">Teams</a>
+                            <a href="#" onclick="app.switchView('reports'); return false;">Analytics</a>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Resources</h4>
+                            <a href="#" onclick="app.addSampleData(); return false;">Demo Data</a>
+                            <a href="#" onclick="app.exportData(); return false;">Export</a>
+                            <a href="#" onclick="app.importData(); return false;">Import</a>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Tech Stack</h4>
+                            <a href="#">HTML5</a>
+                            <a href="#">CSS3</a>
+                            <a href="#">Vanilla JS</a>
+                            <a href="#">Chart.js</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2024 GearGuard. Crafted with <i class="fas fa-heart" style="color: var(--danger);"></i> for maintenance teams.</p>
+                </div>
+            </footer>
+        </div>
+
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" id="app-content">
             <!-- Maintenance Requests View -->
-            <div id="requests-view" class="view active">
+            <div id="requests-view" class="view">
                 <div class="view-header">
                     <h2>Maintenance Requests</h2>
                     <div style="display: flex; gap: 1rem; align-items: center;">
@@ -75,6 +293,12 @@
                 <div class="view-header">
                     <h2>Equipment</h2>
                     <div class="view-actions">
+                        <select id="equipment-group-by" class="search-input" style="width: auto;">
+                            <option value="none">No Grouping</option>
+                            <option value="category">Group by Category</option>
+                            <option value="team">Group by Team</option>
+                            <option value="location">Group by Location</option>
+                        </select>
                         <input type="text" id="equipment-search" placeholder="Search equipment..." class="search-input">
                         <button class="btn btn-primary" onclick="app.openEquipmentModal()">
                             <i class="fas fa-plus"></i> New Equipment
