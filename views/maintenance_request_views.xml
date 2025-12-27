@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
-    <!-- Maintenance Request Kanban View (Primary Workspace) -->
     <record id="view_maintenance_request_kanban" model="ir.ui.view">
         <field name="name">maintenance.request.kanban</field>
         <field name="model">maintenance.request</field>
@@ -22,7 +21,6 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{record.is_overdue.raw_value ? 'oe_kanban_color_2' : 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
-                            <!-- Priority Indicator -->
                             <div class="o_dropdown_kanban dropdown" groups="base.group_user">
                                 <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>
@@ -34,7 +32,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Overdue Indicator -->
                             <div class="ribbon ribbon-top-right" t-if="record.is_overdue.raw_value">
                                 <span class="bg-danger">OVERDUE</span>
                             </div>
@@ -45,7 +42,6 @@
                                         <field name="name"/>
                                     </strong>
                                 </div>
-                                <!-- Priority Stars -->
                                 <field name="priority" widget="priority"/>
                             </div>
                             
@@ -65,7 +61,6 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Request Type Badge -->
                                 <div class="mt-2">
                                     <span t-if="record.request_type.raw_value == 'corrective'" class="badge badge-danger">
                                         <i class="fa fa-exclamation-triangle"/> Corrective
@@ -78,7 +73,6 @@
                             
                             <div class="o_kanban_record_bottom mt-2">
                                 <div class="oe_kanban_bottom_left">
-                                    <!-- Technician Avatar -->
                                     <field name="technician_id" widget="many2one_avatar_user"/>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
@@ -92,9 +86,8 @@
         </field>
     </record>
 
-    <!-- Maintenance Request Tree View -->
     <record id="view_maintenance_request_tree" model="ir.ui.view">
-        <field name="name">maintenance.request.tree</field>
+        <field name="name">maintenance.request.list</field>
         <field name="model">maintenance.request</field>
         <field name="arch" type="xml">
             <list string="Maintenance Requests" decoration-danger="is_overdue == True" decoration-muted="stage_id.done == True">
@@ -108,12 +101,11 @@
                 <field name="priority" widget="priority"/>
                 <field name="scheduled_date"/>
                 <field name="duration"/>
-                <field name="is_overdue" invisible="1"/>
+                <field name="is_overdue" column_invisible="1"/>
             </list>
         </field>
     </record>
 
-    <!-- Maintenance Request Form View -->
     <record id="view_maintenance_request_form" model="ir.ui.view">
         <field name="name">maintenance.request.form</field>
         <field name="model">maintenance.request</field>
@@ -129,10 +121,10 @@
                                 string="Assign to Me" 
                                 class="oe_stat_button" 
                                 icon="fa-user"
-                                attrs="{'invisible': [('technician_id', '!=', False)]}"/>
+                                invisible="technician_id"/>
                     </div>
                     
-                    <widget name="web_ribbon" title="Overdue" bg_color="bg-danger" attrs="{'invisible': [('is_overdue', '=', False)]}"/>
+                    <widget name="web_ribbon" title="Overdue" bg_color="bg-danger" invisible="not is_overdue"/>
                     
                     <group>
                         <group>
@@ -143,7 +135,7 @@
                         <group>
                             <field name="request_date"/>
                             <field name="scheduled_date"/>
-                            <field name="close_date" attrs="{'invisible': [('close_date', '=', False)]}"/>
+                            <field name="close_date" invisible="not close_date"/>
                             <field name="is_overdue" invisible="1"/>
                         </group>
                     </group>
@@ -183,7 +175,6 @@
         </field>
     </record>
 
-    <!-- Maintenance Request Calendar View -->
     <record id="view_maintenance_request_calendar" model="ir.ui.view">
         <field name="name">maintenance.request.calendar</field>
         <field name="model">maintenance.request</field>
@@ -204,7 +195,6 @@
         </field>
     </record>
 
-    <!-- Maintenance Request Pivot View -->
     <record id="view_maintenance_request_pivot" model="ir.ui.view">
         <field name="name">maintenance.request.pivot</field>
         <field name="model">maintenance.request</field>
@@ -218,7 +208,6 @@
         </field>
     </record>
 
-    <!-- Maintenance Request Graph View -->
     <record id="view_maintenance_request_graph" model="ir.ui.view">
         <field name="name">maintenance.request.graph</field>
         <field name="model">maintenance.request</field>
@@ -230,7 +219,6 @@
         </field>
     </record>
 
-    <!-- Maintenance Request Search View -->
     <record id="view_maintenance_request_search" model="ir.ui.view">
         <field name="name">maintenance.request.search</field>
         <field name="model">maintenance.request</field>
@@ -269,11 +257,10 @@
         </field>
     </record>
 
-    <!-- Maintenance Request Action -->
     <record id="action_maintenance_request" model="ir.actions.act_window">
         <field name="name">Maintenance Requests</field>
         <field name="res_model">maintenance.request</field>
-        <field name="view_mode">kanban,list,form,calendar,pivot,graph</field>
+        <field name="view_mode">list,kanban,form,calendar,pivot,graph</field>
         <field name="search_view_id" ref="view_maintenance_request_search"/>
         <field name="context">{'search_default_open': 1}</field>
         <field name="help" type="html">
@@ -287,9 +274,8 @@
         </field>
     </record>
 
-    <!-- Maintenance Stage Tree View -->
     <record id="view_maintenance_stage_tree" model="ir.ui.view">
-        <field name="name">maintenance.stage.tree</field>
+        <field name="name">maintenance.stage.list</field>
         <field name="model">maintenance.stage</field>
         <field name="arch" type="xml">
             <list string="Maintenance Stages" editable="bottom">
@@ -302,7 +288,6 @@
         </field>
     </record>
 
-    <!-- Maintenance Stage Action -->
     <record id="action_maintenance_stage" model="ir.actions.act_window">
         <field name="name">Maintenance Stages</field>
         <field name="res_model">maintenance.stage</field>
