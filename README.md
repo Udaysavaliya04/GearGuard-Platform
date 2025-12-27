@@ -1,6 +1,6 @@
 # GearGuard - Ultimate Maintenance Tracker
 
-A complete maintenance management system that runs entirely in your browser with no backend required!
+GearGuard is a maintenance management system to track equipment, maintenance requests, and teams. The goal is to link equipment (what), teams (who), and requests (work).
 
 ## 🚀 Features
 
@@ -66,6 +66,12 @@ A complete maintenance management system that runs entirely in your browser with
   - **Delete Confirmations** - Smart warnings before deleting items with dependencies
   - Local storage persistence (data saved automatically)
   - Responsive design (works on mobile/tablet/desktop)
+ 
+  - Summary:
+  - Equipment CRUD with department, assignment, maintenance team, and lifecycle fields.
+  - Maintenance requests with role-based filtering and assignment action via DRF ViewSet.
+  - Maintenance teams with members (technicians) management.
+  - User signup/login using the custom user model (roles: admin, manager, technician).
 
 ## 🎯 Quick Start Demo
 
