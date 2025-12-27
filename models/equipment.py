@@ -58,7 +58,15 @@ class MaintenanceEquipment(models.Model):
         'res.users',
         string='Default Technician',
         tracking=True,
+        domain="[('id', 'in', technician_user_ids)]",
         help='Default technician assigned to maintain this equipment'
+    )
+    
+    technician_user_ids = fields.Many2many(
+        'res.users',
+        string='Available Technicians',
+        compute='_compute_technician_user_ids',
+        help='Technicians from the maintenance team'
     )
     
     # Purchase & Warranty Information
@@ -131,6 +139,15 @@ class MaintenanceEquipment(models.Model):
     color = fields.Integer(
         string='Color Index'
     )
+    
+    @api.depends('maintenance_team_id')
+    def _compute_technician_user_ids(self):
+        """Get available technicians from the maintenance team"""
+        for equipment in self:
+            if equipment.maintenance_team_id:
+                equipment.technician_user_ids = equipment.maintenance_team_id.member_ids
+            else:
+                equipment.technician_user_ids = False
     
     @api.depends('name')
     def _compute_maintenance_count(self):
