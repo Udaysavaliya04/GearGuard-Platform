@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GearGuard - Ultimate Maintenance Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <h1>GearGuard</h1>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-view="requests">
+                    <i class="fas fa-ticket-alt"></i> Requests
+                </button>
+                <button class="nav-btn" data-view="equipment">
+                    <i class="fas fa-wrench"></i> Equipment
+                </button>
+                <button class="nav-btn" data-view="teams">
+                    <i class="fas fa-users"></i> Teams
+                </button>
+                <button class="nav-btn" data-view="calendar">
+                    <i class="fas fa-calendar-alt"></i> Calendar
+                </button>
+                <button class="nav-btn" data-view="reports">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Maintenance Requests View -->
+            <div id="requests-view" class="view active">
+                <div class="view-header">
+                    <h2>Maintenance Requests</h2>
+                    <button class="btn btn-primary" onclick="app.openRequestModal()">
+                        <i class="fas fa-plus"></i> New Request
+                    </button>
+                </div>
+                
+                <div class="kanban-board" id="kanban-board">
+                    <!-- Kanban columns will be generated here -->
+                </div>
+            </div>
+
+            <!-- Equipment View -->
+            <div id="equipment-view" class="view">
+                <div class="view-header">
+                    <h2>Equipment</h2>
+                    <div class="view-actions">
+                        <input type="text" id="equipment-search" placeholder="Search equipment..." class="search-input">
+                        <button class="btn btn-primary" onclick="app.openEquipmentModal()">
+                            <i class="fas fa-plus"></i> New Equipment
+                        </button>
+                    </div>
+                </div>
+                <div id="equipment-list" class="data-table"></div>
+            </div>
+
+            <!-- Teams View -->
+            <div id="teams-view" class="view">
+                <div class="view-header">
+                    <h2>Maintenance Teams</h2>
+                    <button class="btn btn-primary" onclick="app.openTeamModal()">
+                        <i class="fas fa-plus"></i> New Team
+                    </button>
+                </div>
+                <div id="teams-list" class="teams-grid"></div>
+            </div>
+
+            <!-- Calendar View -->
+            <div id="calendar-view" class="view">
+                <div class="view-header">
+                    <h2>Maintenance Calendar</h2>
+                    <div class="calendar-controls">
+                        <button class="btn" onclick="app.prevMonth()"><i class="fas fa-chevron-left"></i></button>
+                        <h3 id="calendar-month"></h3>
+                        <button class="btn" onclick="app.nextMonth()"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div id="calendar-grid" class="calendar-grid"></div>
+            </div>
+
+            <!-- Reports View -->
+            <div id="reports-view" class="view">
+                <div class="view-header">
+                    <h2>Reports & Analytics</h2>
+                </div>
+                <div class="reports-container">
+                    <div class="report-card">
+                        <h3>Requests by Team</h3>
+                        <canvas id="teamChart"></canvas>
+                    </div>
+                    <div class="report-card">
+                        <h3>Requests by Type</h3>
+                        <canvas id="typeChart"></canvas>
+                    </div>
+                    <div class="report-card">
+                        <h3>Requests by Status</h3>
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modals -->
+        <div id="modal-overlay" class="modal-overlay" onclick="app.closeModal()"></div>
+        
+        <!-- Request Modal -->
+        <div id="request-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="request-modal-title">New Maintenance Request</h3>
+                    <button class="close-btn" onclick="app.closeModal()">&times;</button>
+                </div>
+                <form id="request-form" onsubmit="app.saveRequest(event)">
+                    <div class="form-group">
+                        <label>Subject *</label>
+                        <input type="text" name="subject" required placeholder="e.g., Leaking Oil">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Request Type *</label>
+                            <select name="type" required>
+                                <option value="corrective">Corrective (Breakdown)</option>
+                                <option value="preventive">Preventive (Routine)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select name="priority">
+                                <option value="low">Low</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Equipment *</label>
+                        <select name="equipment" required onchange="app.onEquipmentChange(this)">
+                            <option value="">Select equipment...</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Team (Auto-filled)</label>
+                            <input type="text" name="team" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Technician</label>
+                            <select name="technician">
+                                <option value="">Assign later...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Scheduled Date</label>
+                        <input type="datetime-local" name="scheduledDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" rows="3" placeholder="Detailed description..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Duration (hours)</label>
+                        <input type="number" name="duration" step="0.5" min="0" placeholder="Hours spent">
+                    </div>
+                    <input type="hidden" name="id">
+                    <div class="modal-footer">
+                        <button type="button" class="btn" onclick="app.closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Equipment Modal -->
+        <div id="equipment-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>New Equipment</h3>
+                    <button class="close-btn" onclick="app.closeModal()">&times;</button>
+                </div>
+                <form id="equipment-form" onsubmit="app.saveEquipment(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Equipment Name *</label>
+                            <input type="text" name="name" required placeholder="e.g., CNC Machine">
+                        </div>
+                        <div class="form-group">
+                            <label>Serial Number</label>
+                            <input type="text" name="serialNumber" placeholder="e.g., SN-12345">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category *</label>
+                            <select name="category" required>
+                                <option value="Vehicles">Vehicles</option>
+                                <option value="Computers">Computers</option>
+                                <option value="Machinery">Machinery</option>
+                                <option value="Office Equipment">Office Equipment</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Maintenance Team *</label>
+                            <select name="team" required onchange="app.onTeamChangeEquipment(this)">
+                                <option value="">Select team...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Default Technician</label>
+                            <select name="technician">
+                                <option value="">Select technician...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" name="location" placeholder="e.g., Building A, Floor 2">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Purchase Date</label>
+                            <input type="date" name="purchaseDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Warranty End Date</label>
+                            <input type="date" name="warrantyDate">
+                        </div>
+                    </div>
+                    <input type="hidden" name="id">
+                    <div class="modal-footer">
+                        <button type="button" class="btn" onclick="app.closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Team Modal -->
+        <div id="team-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>New Team</h3>
+                    <button class="close-btn" onclick="app.closeModal()">&times;</button>
+                </div>
+                <form id="team-form" onsubmit="app.saveTeam(event)">
+                    <div class="form-group">
+                        <label>Team Name *</label>
+                        <input type="text" name="name" required placeholder="e.g., Mechanics, IT Support">
+                    </div>
+                    <div class="form-group">
+                        <label>Team Members (one per line)</label>
+                        <textarea name="members" rows="4" placeholder="John Doe&#10;Jane Smith&#10;..."></textarea>
+                    </div>
+                    <input type="hidden" name="id">
+                    <div class="modal-footer">
+                        <button type="button" class="btn" onclick="app.closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
