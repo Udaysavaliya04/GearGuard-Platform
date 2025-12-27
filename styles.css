@@ -199,6 +199,7 @@ body {
     font-weight: 600;
 }
 
+
 .btn-launch:hover {
     background: linear-gradient(135deg, var(--primary), var(--primary-light));
     box-shadow: 0 6px 24px rgba(167, 139, 250, 0.5);

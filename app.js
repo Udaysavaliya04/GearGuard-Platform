@@ -547,6 +547,7 @@ class GearGuard {
                 this.onTeamChangeEquipment(teamSelect);
                 form.querySelector('[name="technician"]').value = equipment.technician || '';
             }
+            
         } else {
             form.reset();
             form.querySelector('[name="id"]').value = '';
