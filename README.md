@@ -1,12 +1,8 @@
 # GearGuard - Ultimate Maintenance Tracker
 
-## Standalone Web Application
-
 A complete maintenance management system that runs entirely in your browser with no backend required!
 
 ## 🚀 Features
-
-### ✅ All Requirements Implemented
 
 - **Equipment Management**
 
@@ -71,30 +67,6 @@ A complete maintenance management system that runs entirely in your browser with
   - Local storage persistence (data saved automatically)
   - Responsive design (works on mobile/tablet/desktop)
 
-## 📦 Installation
-
-### Option 1: Direct Open (Easiest)
-
-1. Download/extract the folder
-2. Double-click `index.html`
-3. That's it! No server needed!
-
-### Option 2: Local Server (Recommended for Development)
-
-```bash
-# Using Python
-cd gearguard-web
-python -m http.server 8000
-
-# Using Node.js
-npx http-server
-
-# Using PHP
-php -S localhost:8000
-```
-
-Then open: `http://localhost:8000`
-
 ## 🎯 Quick Start Demo
 
 1. **Open the application** (double-click index.html)
@@ -126,20 +98,6 @@ Then open: `http://localhost:8000`
    - **Import**: Upload button (📤) - restore from backup
    - **Reset**: Trash button (🗑️) - clear all data
 
-<<<<<<< HEAD
-## 💡 Tips for Hackathon Demo
-
-1. **Start Fresh**: Click "Demo" to load sample data
-2. **Show Drag & Drop**: Move "CNC Oil Leak" from "In Progress" to "Repaired" (watch toast notification!)
-3. **Demonstrate Grouping**: Go to Equipment → Select "Group by Category" to show organized view
-4. **Highlight Smart Buttons**: Click the red maintenance count badge to filter requests
-5. **Demo Auto-Fill**: Create new request, select equipment, watch team auto-fill
-6. **Show Calendar**: Switch to Calendar view to see scheduled maintenance
-7. **Scrap Demo**: Drag a request to "Scrap" stage to see equipment marked as scrapped with notification
-8. **Export Data**: Download backup to show data portability
-
-=======
->>>>>>> 0ffae365048ddf5d782bc28eca8c124e7d044afd
 ## 📁 File Structure
 
 ```
@@ -160,8 +118,6 @@ gearguard-web/
 - **Local Storage API** - Data persistence
 
 ## 💾 Data Storage
-
-All data is stored in your browser's LocalStorage:
 
 - Automatic saving on every change
 - Persists across browser sessions
@@ -208,51 +164,3 @@ Preventive requests → Show on calendar
 Click date → Create new request for that date
 ```
 
-## 🐛 Troubleshooting
-
-**Data not saving?**
-
-- Check browser LocalStorage is enabled
-- Try different browser
-
-**Charts not showing?**
-
-- Make sure you have internet connection (Chart.js loads from CDN)
-- Or download Chart.js locally
-
-**Drag & Drop not working?**
-
-- Use modern browser (Chrome, Firefox, Edge, Safari)
-- Not supported in IE11
-
-## 🚀 Deployment
-
-### GitHub Pages (Free Hosting)
-
-1. Create GitHub repository
-2. Upload all files
-3. Settings → Pages → Deploy from main branch
-4. Access at: `https://yourusername.github.io/gearguard`
-
-### Netlify (Free Hosting)
-
-1. Drag & drop folder to Netlify.com
-2. Get instant URL
-3. Done!
-
-## 📝 License
-
-Free to use for demonstrations and learning!
-
-## 🎉 Enjoy!
-
-You now have a fully functional maintenance tracker that:
-
-- ✅ Works offline
-- ✅ No backend needed
-- ✅ No installation required
-- ✅ All features implemented
-- ✅ Professional UI/UX
-- ✅ Mobile responsive
-
-**Just open `index.html` and start tracking maintenance!** 🔧
