@@ -126,6 +126,7 @@ Then open: `http://localhost:8000`
    - **Import**: Upload button (📤) - restore from backup
    - **Reset**: Trash button (🗑️) - clear all data
 
+<<<<<<< HEAD
 ## 💡 Tips for Hackathon Demo
 
 1. **Start Fresh**: Click "Demo" to load sample data
@@ -137,6 +138,8 @@ Then open: `http://localhost:8000`
 7. **Scrap Demo**: Drag a request to "Scrap" stage to see equipment marked as scrapped with notification
 8. **Export Data**: Download backup to show data portability
 
+=======
+>>>>>>> 0ffae365048ddf5d782bc28eca8c124e7d044afd
 ## 📁 File Structure
 
 ```
@@ -204,43 +207,6 @@ Red "OVERDUE" badge appears
 Preventive requests → Show on calendar
 Click date → Create new request for that date
 ```
-
-## 🎬 Video Demo Script
-
-1. **Show Equipment** (0:00-0:30)
-
-   - View equipment list
-   - Show CNC Machine with team assignment
-
-2. **Create Breakdown Request** (0:30-1:30)
-
-   - Click "New Request"
-   - Select "CNC Machine"
-   - **Highlight**: Team auto-fills!
-   - Save and show on Kanban board
-
-3. **Drag & Drop Workflow** (1:30-2:00)
-
-   - Drag card from "New" to "In Progress"
-   - Add duration
-   - Drag to "Repaired"
-
-4. **Preventive Maintenance** (2:00-2:45)
-
-   - Switch to Calendar view
-   - Click next week
-   - Create preventive request
-   - Show it on calendar
-
-5. **Scrap Demo** (2:45-3:15)
-
-   - Create request
-   - Drag to "Scrap"
-   - Show alert and scrapped equipment
-
-6. **Reports** (3:15-4:00)
-   - Show charts
-   - Demonstrate real-time data
 
 ## 🐛 Troubleshooting
 
